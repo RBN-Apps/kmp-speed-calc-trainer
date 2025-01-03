@@ -24,19 +24,23 @@ fun App(modifier: Modifier = Modifier) {
     var userInput by remember { mutableStateOf(TextFieldValue("")) }
     var feedback by remember { mutableStateOf("") }
     var showFeedback by remember { mutableStateOf(false) }
-    var range1Start by remember { mutableStateOf("1") }
-    var range1End by remember { mutableStateOf("10") }
-    var range2Start by remember { mutableStateOf("1") }
-    var range2End by remember { mutableStateOf("10") }
+    var range1Start by remember { mutableStateOf("2") }
+    var range1End by remember { mutableStateOf("9") }
+    var range2Start by remember { mutableStateOf("2") }
+    var range2End by remember { mutableStateOf("9") }
 
     fun updateNumbers() {
-        val start1 = range1Start.toIntOrNull() ?: 1
-        val end1 = range1End.toIntOrNull() ?: 10
-        val start2 = range2Start.toIntOrNull() ?: 1
-        val end2 = range2End.toIntOrNull() ?: 10
+        val start1 = range1Start.toIntOrNull() ?: 2
+        val end1 = range1End.toIntOrNull() ?: 9
+        val start2 = range2Start.toIntOrNull() ?: 2
+        val end2 = range2End.toIntOrNull() ?: 9
 
         number1 = Random.nextInt(start1, end1 + 1)
         number2 = Random.nextInt(start2, end2 + 1)
+    }
+
+    LaunchedEffect(Unit) {
+        updateNumbers()
     }
 
     fun handleSubmit() {
@@ -85,13 +89,15 @@ fun App(modifier: Modifier = Modifier) {
                     getMaterialOutlinedTextField(
                         value = range1Start,
                         onValueChange = {
-                            range1Start = it
-                            val min = it.toIntOrNull()
-                            val max = range1End.toIntOrNull()
-                            if (min != null && max != null && min > max) {
-                                range1End = it
+                            if (it.isEmpty() || it == "-" || it.toIntOrNull() != null) {
+                                range1Start = it
+                                val min = it.toIntOrNull()
+                                val max = range1End.toIntOrNull()
+                                if (min != null && max != null && min > max) {
+                                    range1End = it
+                                }
+                                updateNumbers()
                             }
-                            updateNumbers()
                         },
                         label = "Min",
                         modifier = Modifier.width(70.dp),
@@ -106,13 +112,15 @@ fun App(modifier: Modifier = Modifier) {
                     getMaterialOutlinedTextField(
                         value = range1End,
                         onValueChange = {
-                            range1End = it
-                            val min = range1Start.toIntOrNull()
-                            val max = it.toIntOrNull()
-                            if (min != null && max != null && max < min) {
-                                range1Start = it
+                            if (it.isEmpty() || it == "-" || it.toIntOrNull() != null) {
+                                range1End = it
+                                val min = range1Start.toIntOrNull()
+                                val max = it.toIntOrNull()
+                                if (min != null && max != null && max < min) {
+                                    range1Start = it
+                                }
+                                updateNumbers()
                             }
-                            updateNumbers()
                         },
                         label = "Max",
                         modifier = Modifier.width(70.dp),
@@ -138,13 +146,15 @@ fun App(modifier: Modifier = Modifier) {
                     getMaterialOutlinedTextField(
                         value = range2Start,
                         onValueChange = {
-                            range2Start = it
-                            val min = it.toIntOrNull()
-                            val max = range2End.toIntOrNull()
-                            if (min != null && max != null && min > max) {
-                                range2End = it
+                            if (it.isEmpty() || it == "-" || it.toIntOrNull() != null) {
+                                range2Start = it
+                                val min = it.toIntOrNull()
+                                val max = range2End.toIntOrNull()
+                                if (min != null && max != null && min > max) {
+                                    range2End = it
+                                }
+                                updateNumbers()
                             }
-                            updateNumbers()
                         },
                         label = "Min",
                         modifier = Modifier.width(70.dp),
@@ -159,15 +169,17 @@ fun App(modifier: Modifier = Modifier) {
                     getMaterialOutlinedTextField(
                         value = range2End,
                         onValueChange = {
-                            range2End = it
-                            val min = range2Start.toIntOrNull()
-                            val max = it.toIntOrNull()
-                            if (min != null && max != null && max < min) {
-                                range2Start = it
+                            if (it.isEmpty() || it == "-" || it.toIntOrNull() != null) {
+                                range2End = it
+                                val min = range2Start.toIntOrNull()
+                                val max = it.toIntOrNull()
+                                if (min != null && max != null && max < min) {
+                                    range2Start = it
+                                }
+                                updateNumbers()
                             }
-                            updateNumbers()
                         },
-                        label ="Max",
+                        label = "Max",
                         modifier = Modifier.width(70.dp),
                         keyboardOptions = KeyboardOptions.Default.copy(
                             keyboardType = KeyboardType.Number,
