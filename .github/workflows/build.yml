@@ -30,6 +30,9 @@ jobs:
             ~/.gradle/wrapper
           key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
 
+      - name: Make Gradle wrapper executable
+        run: chmod +x ./gradlew
+
       - name: Build Desktop (Windows .exe, macOS .dmg, Linux .deb)
         run: |
           ./gradlew packageReleaseDistributionForCurrentOS
