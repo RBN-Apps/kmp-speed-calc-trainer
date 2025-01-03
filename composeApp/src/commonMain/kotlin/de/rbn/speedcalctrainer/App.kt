@@ -1,18 +1,11 @@
 package de.rbn.speedcalctrainer
 
-import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.*
 import androidx.compose.animation.core.tween
-import androidx.compose.animation.fadeIn
-import androidx.compose.animation.fadeOut
-import androidx.compose.animation.slideInVertically
-import androidx.compose.animation.slideOutVertically
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.material.Button
 import androidx.compose.material.MaterialTheme
-import androidx.compose.material.OutlinedTextField
-import androidx.compose.material.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -50,10 +43,10 @@ fun App(modifier: Modifier = Modifier) {
         val correctAnswer = number1 * number2
         val userAnswer = userInput.text.toIntOrNull()
 
-        if (userAnswer == correctAnswer) {
-            feedback = "Correct! 🎉"
+        feedback = if (userAnswer == correctAnswer) {
+            "Correct! 🎉"
         } else {
-            feedback = "Incorrect. $number1 x $number2 = $correctAnswer."
+            "Incorrect. $number1 x $number2 = $correctAnswer."
         }
 
         userInput = TextFieldValue("")
@@ -70,7 +63,7 @@ fun App(modifier: Modifier = Modifier) {
     ) {
         Spacer(modifier = Modifier.height(16.dp))
 
-        Text(
+        getMaterialText(
             text = "SpeedCalc Training",
             style = MaterialTheme.typography.h1,
             color = MaterialTheme.colors.primary
@@ -86,10 +79,10 @@ fun App(modifier: Modifier = Modifier) {
         ) {
             // Bereich für Zahl 1
             Column(horizontalAlignment = Alignment.CenterHorizontally) {
-                Text("Range for Number 1", style = MaterialTheme.typography.body2)
+                getMaterialText("Range for Number 1", style = MaterialTheme.typography.body2)
                 Spacer(modifier = Modifier.height(8.dp))
                 Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-                    OutlinedTextField(
+                    getMaterialOutlinedTextField(
                         value = range1Start,
                         onValueChange = {
                             range1Start = it
@@ -100,7 +93,7 @@ fun App(modifier: Modifier = Modifier) {
                             }
                             updateNumbers()
                         },
-                        label = { Text("Min") },
+                        label = "Min",
                         modifier = Modifier.width(70.dp),
                         keyboardOptions = KeyboardOptions.Default.copy(
                             keyboardType = KeyboardType.Number,
@@ -110,7 +103,7 @@ fun App(modifier: Modifier = Modifier) {
                             onDone = { handleSubmit() }
                         )
                     )
-                    OutlinedTextField(
+                    getMaterialOutlinedTextField(
                         value = range1End,
                         onValueChange = {
                             range1End = it
@@ -121,7 +114,7 @@ fun App(modifier: Modifier = Modifier) {
                             }
                             updateNumbers()
                         },
-                        label = { Text("Max") },
+                        label = "Max",
                         modifier = Modifier.width(70.dp),
                         keyboardOptions = KeyboardOptions.Default.copy(
                             keyboardType = KeyboardType.Number,
@@ -138,10 +131,11 @@ fun App(modifier: Modifier = Modifier) {
 
             // Bereich für Zahl 2
             Column(horizontalAlignment = Alignment.CenterHorizontally) {
-                Text("Range for Number 2", style = MaterialTheme.typography.body2)
+
+                getMaterialText("Range for Number 2", style = MaterialTheme.typography.body2)
                 Spacer(modifier = Modifier.height(8.dp))
                 Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-                    OutlinedTextField(
+                    getMaterialOutlinedTextField(
                         value = range2Start,
                         onValueChange = {
                             range2Start = it
@@ -152,7 +146,7 @@ fun App(modifier: Modifier = Modifier) {
                             }
                             updateNumbers()
                         },
-                        label = { Text("Min") },
+                        label = "Min",
                         modifier = Modifier.width(70.dp),
                         keyboardOptions = KeyboardOptions.Default.copy(
                             keyboardType = KeyboardType.Number,
@@ -162,7 +156,7 @@ fun App(modifier: Modifier = Modifier) {
                             onDone = { handleSubmit() }
                         )
                     )
-                    OutlinedTextField(
+                    getMaterialOutlinedTextField(
                         value = range2End,
                         onValueChange = {
                             range2End = it
@@ -173,7 +167,7 @@ fun App(modifier: Modifier = Modifier) {
                             }
                             updateNumbers()
                         },
-                        label = { Text("Max") },
+                        label ="Max",
                         modifier = Modifier.width(70.dp),
                         keyboardOptions = KeyboardOptions.Default.copy(
                             keyboardType = KeyboardType.Number,
@@ -189,17 +183,17 @@ fun App(modifier: Modifier = Modifier) {
 
         Spacer(modifier = Modifier.height(16.dp))
 
-        Text(
+        getMaterialText(
             text = "What is $number1 x $number2?",
             style = MaterialTheme.typography.h2
         )
 
         Spacer(modifier = Modifier.height(16.dp))
 
-        OutlinedTextField(
-            value = userInput,
-            onValueChange = { userInput = it },
-            label = { Text("Your Answer") },
+        getMaterialOutlinedTextField(
+            value = userInput.text,
+            onValueChange = { userInput = TextFieldValue(it) },
+            label = "Your Answer",
             keyboardOptions = KeyboardOptions.Default.copy(
                 keyboardType = KeyboardType.Number,
                 imeAction = androidx.compose.ui.text.input.ImeAction.Done
@@ -212,9 +206,7 @@ fun App(modifier: Modifier = Modifier) {
 
         Spacer(modifier = Modifier.height(16.dp))
 
-        Button(onClick = { handleSubmit() }) {
-            Text("Submit")
-        }
+        getMaterialButton(onClick = { handleSubmit() }, text = "Submit")
 
         Spacer(modifier = Modifier.height(16.dp))
 
@@ -231,9 +223,9 @@ fun App(modifier: Modifier = Modifier) {
             enter = fadeIn(animationSpec = tween(500)) + slideInVertically(initialOffsetY = { -50 }),
             exit = fadeOut(animationSpec = tween(500)) + slideOutVertically(targetOffsetY = { -50 })
         ) {
-            Text(
+            getMaterialText(
                 text = feedback,
-                style = MaterialTheme.typography.body2,
+                style = MaterialTheme.typography.body1,
                 color = if (feedback.startsWith("Correct")) Color.Green else Color.Red,
                 modifier = Modifier.padding(16.dp)
             )
