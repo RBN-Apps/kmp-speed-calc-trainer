@@ -22,4 +22,5 @@ expect fun getMaterialOutlinedTextField(
     label: String,
     keyboardOptions: KeyboardOptions = KeyboardOptions.Default,
     keyboardActions: KeyboardActions = KeyboardActions.Default,
+    singleLine: Boolean = true
 )

@@ -39,7 +39,8 @@ actual fun getMaterialOutlinedTextField(
     modifier: Modifier,
     label: String,
     keyboardOptions: KeyboardOptions,
-    keyboardActions: KeyboardActions
+    keyboardActions: KeyboardActions,
+    singleLine: Boolean
 ) {
     return OutlinedTextField(
         value = value,
@@ -47,6 +48,7 @@ actual fun getMaterialOutlinedTextField(
         modifier = modifier,
         label = { Text(label) },
         keyboardOptions = keyboardOptions,
-        keyboardActions = keyboardActions
+        keyboardActions = keyboardActions,
+        singleLine = singleLine
     )
 }

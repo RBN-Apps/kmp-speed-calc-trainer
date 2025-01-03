@@ -3,14 +3,14 @@ package de.rbn.speedcalctrainer
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.MaterialTheme
-import androidx.compose.material3.OutlinedTextField
-import androidx.compose.material3.MaterialTheme as Material3Theme
 import androidx.compose.material3.Button
+import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.TextStyle
+import androidx.compose.material3.MaterialTheme as Material3Theme
 
 @Composable
 actual fun getMaterialButton(onClick: () -> Unit, text: String) {
@@ -34,8 +34,8 @@ actual fun getMaterialText(
         MaterialTheme.typography.body2 -> Material3Theme.typography.bodyMedium
         else -> style
     }
-    
-    val androidColor = when(color) {
+
+    val androidColor = when (color) {
         MaterialTheme.colors.primary -> Material3Theme.colorScheme.primary
         MaterialTheme.colors.secondary -> Material3Theme.colorScheme.secondary
         MaterialTheme.colors.onPrimary -> Material3Theme.colorScheme.onPrimary
@@ -48,7 +48,7 @@ actual fun getMaterialText(
         MaterialTheme.colors.onError -> Material3Theme.colorScheme.onError
         else -> color
     }
-    
+
     return Text(
         text = text,
         style = androidStyle,
@@ -57,6 +57,7 @@ actual fun getMaterialText(
     )
 }
 
+
 @Composable
 actual fun getMaterialOutlinedTextField(
     value: String,
@@ -64,7 +65,8 @@ actual fun getMaterialOutlinedTextField(
     modifier: Modifier,
     label: String,
     keyboardOptions: KeyboardOptions,
-    keyboardActions: KeyboardActions
+    keyboardActions: KeyboardActions,
+    singleLine: Boolean
 ) {
     return OutlinedTextField(
         value = value,
@@ -72,6 +74,7 @@ actual fun getMaterialOutlinedTextField(
         modifier = modifier,
         label = { Text(label) },
         keyboardOptions = keyboardOptions,
-        keyboardActions = keyboardActions
+        keyboardActions = keyboardActions,
+        singleLine = singleLine
     )
 }

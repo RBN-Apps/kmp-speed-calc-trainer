@@ -3,11 +3,11 @@ package de.rbn.speedcalctrainer
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.OutlinedTextField
+import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.TextStyle
-import androidx.compose.material.Text
 
 
 @Composable
@@ -32,7 +32,8 @@ actual fun getMaterialOutlinedTextField(
     modifier: Modifier,
     label: String,
     keyboardOptions: KeyboardOptions,
-    keyboardActions: KeyboardActions
+    keyboardActions: KeyboardActions,
+    singleLine: Boolean
 ) {
     return OutlinedTextField(
         value = value,
@@ -40,6 +41,7 @@ actual fun getMaterialOutlinedTextField(
         modifier = modifier,
         label = { Text(label) },
         keyboardOptions = keyboardOptions,
-        keyboardActions = keyboardActions
+        keyboardActions = keyboardActions,
+        singleLine = singleLine
     )
 }

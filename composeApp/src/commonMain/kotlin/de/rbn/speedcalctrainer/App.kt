@@ -98,10 +98,10 @@ fun App(modifier: Modifier = Modifier) {
                         keyboardOptions = KeyboardOptions.Default.copy(
                             keyboardType = KeyboardType.Number,
                             imeAction = androidx.compose.ui.text.input.ImeAction.Done
-                        ),
-                        keyboardActions = KeyboardActions(
-                            onDone = { handleSubmit() }
                         )
+//                        keyboardActions = KeyboardActions(
+//                            onDone = { handleSubmit() }
+//                        )
                     )
                     getMaterialOutlinedTextField(
                         value = range1End,
@@ -119,10 +119,10 @@ fun App(modifier: Modifier = Modifier) {
                         keyboardOptions = KeyboardOptions.Default.copy(
                             keyboardType = KeyboardType.Number,
                             imeAction = androidx.compose.ui.text.input.ImeAction.Done
-                        ),
-                        keyboardActions = KeyboardActions(
-                            onDone = { handleSubmit() }
                         )
+//                        keyboardActions = KeyboardActions(
+//                            onDone = { handleSubmit() }
+//                        )
                     )
                 }
             }
@@ -151,10 +151,10 @@ fun App(modifier: Modifier = Modifier) {
                         keyboardOptions = KeyboardOptions.Default.copy(
                             keyboardType = KeyboardType.Number,
                             imeAction = androidx.compose.ui.text.input.ImeAction.Done
-                        ),
-                        keyboardActions = KeyboardActions(
-                            onDone = { handleSubmit() }
                         )
+//                        keyboardActions = KeyboardActions(
+//                            onDone = { handleSubmit() }
+//                        )
                     )
                     getMaterialOutlinedTextField(
                         value = range2End,
@@ -172,10 +172,10 @@ fun App(modifier: Modifier = Modifier) {
                         keyboardOptions = KeyboardOptions.Default.copy(
                             keyboardType = KeyboardType.Number,
                             imeAction = androidx.compose.ui.text.input.ImeAction.Done
-                        ),
-                        keyboardActions = KeyboardActions(
-                            onDone = { handleSubmit() }
                         )
+//                        keyboardActions = KeyboardActions(
+//                            onDone = { handleSubmit() }
+//                        )
                     )
                 }
             }
