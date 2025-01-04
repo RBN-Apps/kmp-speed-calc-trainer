@@ -3,7 +3,7 @@ name: Build Multiplatform Application
 on:
   push:
     tags:
-      - '*'
+      - 'v*'
 
 jobs:
   build-desktop:
@@ -32,7 +32,7 @@ jobs:
       - name: Upload platform-specific artifact
         uses: actions/upload-artifact@v3
         with:
-          name: build-${{ matrix.os }}
+          name: build-${{ matrix.os }}-${{ github.ref_name }}
           path: |
             composeApp/build/compose/binaries/main-release/exe/*.exe
             composeApp/build/compose/binaries/main-release/deb/*.deb
@@ -60,7 +60,7 @@ jobs:
       - name: Upload Android APK
         uses: actions/upload-artifact@v3
         with:
-          name: android-apk
+          name: android-apk-${{ github.ref_name }}
           path: composeApp/build/outputs/apk/debug/*.apk
 
   build-wasm:
@@ -85,7 +85,7 @@ jobs:
       - name: Upload WebAssembly files
         uses: actions/upload-artifact@v3
         with:
-          name: wasm-web-files
+          name: wasm-web-files-${{ github.ref_name }}
           path: composeApp/build/dist/wasmJs/productionExecutable/*
 
       - name: Upload GitHub Pages artifact
@@ -123,14 +123,49 @@ jobs:
           draft: false
           prerelease: false
 
-      - name: Upload Release Assets
+      - name: Zip WebAssembly files
+        run: |
+          cd artifacts/wasm-web-files-${{ github.ref_name }}
+          zip -r ../../wasm-dist-${{ github.ref_name }}.zip .
+
+      - name: Upload Android APK
         uses: actions/upload-release-asset@v1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: ./artifacts
-          asset_name: build_artifacts
+          asset_path: ./artifacts/android-apk-${{ github.ref_name }}/*.apk
+          asset_name: app-debug-${{ github.ref_name }}.apk
+          asset_content_type: application/vnd.android.package-archive
+
+      - name: Upload Linux DEB
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: ./artifacts/build-ubuntu-latest-${{ github.ref_name }}/*.deb
+          asset_name: app-${{ github.ref_name }}.deb
+          asset_content_type: application/vnd.debian.binary-package
+
+      - name: Upload macOS DMG
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: ./artifacts/build-macos-latest-${{ github.ref_name }}/*.dmg
+          asset_name: app-${{ github.ref_name }}.dmg
+          asset_content_type: application/x-apple-diskimage
+
+      - name: Upload WebAssembly ZIP
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: ./wasm-dist-${{ github.ref_name }}.zip
+          asset_name: wasm-dist-${{ github.ref_name }}.zip
           asset_content_type: application/zip
 
   deploy-github-pages:
