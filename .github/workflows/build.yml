@@ -38,8 +38,8 @@ jobs:
           elif [ "${{ matrix.os }}" == "macos-latest" ]; then
             echo "ARTIFACT_PATH=$(find ./composeApp/build/compose/binaries/main-release/dmg -name '*.dmg' -print -quit)" >> $GITHUB_ENV
           elif [ "${{ matrix.os }}" == "windows-latest" ]; then
-            EXE_PATH=$(find ./composeApp/build/compose/binaries/main-release/win -name '*.exe' -print -quit)
-            MSI_PATH=$(find ./composeApp/build/compose/binaries/main-release/win -name '*.msi' -print -quit)
+            EXE_PATH=$(find ./composeApp/build/compose/binaries/main-release/exe -name '*.exe' -print -quit)
+            MSI_PATH=$(find ./composeApp/build/compose/binaries/main-release/msi -name '*.msi' -print -quit)
             echo "EXE_PATH=${EXE_PATH}" >> $GITHUB_ENV
             echo "MSI_PATH=${MSI_PATH}" >> $GITHUB_ENV
           fi
