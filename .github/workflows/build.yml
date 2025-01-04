@@ -177,7 +177,7 @@ jobs:
         with:
           upload_url: ${{ steps.create_release.outputs.upload_url }}
           asset_path: ${{ env.APK_PATH }}
-          asset_name: app-debug-${{ github.ref_name }}.apk
+          asset_name: android-app-debug-${{ github.ref_name }}.apk
           asset_content_type: application/vnd.android.package-archive
 
       - name: Upload Linux DEB
@@ -187,7 +187,7 @@ jobs:
         with:
           upload_url: ${{ steps.create_release.outputs.upload_url }}
           asset_path: ${{ env.DEB_PATH }}
-          asset_name: app-${{ github.ref_name }}.deb
+          asset_name: linux-app-${{ github.ref_name }}.deb
           asset_content_type: application/vnd.debian.binary-package
 
       - name: Upload macOS DMG
@@ -197,7 +197,7 @@ jobs:
         with:
           upload_url: ${{ steps.create_release.outputs.upload_url }}
           asset_path: ${{ env.DMG_PATH }}
-          asset_name: app-${{ github.ref_name }}.dmg
+          asset_name: macos-app-${{ github.ref_name }}.dmg
           asset_content_type: application/x-apple-diskimage
 
       - name: Upload Windows EXE
@@ -207,7 +207,7 @@ jobs:
         with:
           upload_url: ${{ steps.create_release.outputs.upload_url }}
           asset_path: ${{ env.EXE_PATH }}
-          asset_name: app-${{ github.ref_name }}.exe
+          asset_name: windows-app-${{ github.ref_name }}.exe
           asset_content_type: application/octet-stream
 
       - name: Upload Windows MSI
@@ -217,7 +217,7 @@ jobs:
         with:
           upload_url: ${{ steps.create_release.outputs.upload_url }}
           asset_path: ${{ env.MSI_PATH }}
-          asset_name: app-${{ github.ref_name }}.msi
+          asset_name: windows-app-${{ github.ref_name }}.msi
           asset_content_type: application/x-msi
 
       - name: Upload WebAssembly ZIP
@@ -227,7 +227,7 @@ jobs:
         with:
           upload_url: ${{ steps.create_release.outputs.upload_url }}
           asset_path: ./wasm-dist-${{ github.ref_name }}.zip
-          asset_name: wasm-dist-${{ github.ref_name }}.zip
+          asset_name: wasm-web-files-${{ github.ref_name }}.zip
           asset_content_type: application/zip
 
   deploy-github-pages:
