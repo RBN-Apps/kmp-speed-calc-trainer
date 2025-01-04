@@ -117,6 +117,9 @@ jobs:
         with:
           path: ./artifacts
 
+      - name: Display structure of downloaded files
+        run: ls -R ./artifacts
+
       - name: Create GitHub Release
         id: create_release
         uses: actions/create-release@v1
@@ -138,13 +141,25 @@ jobs:
           cd artifacts/wasm-web-files-${{ github.ref_name }}
           zip -r ../../wasm-dist-${{ github.ref_name }}.zip .
 
+      - name: Find APK path
+        run: |
+          echo "APK_PATH=$(find ./artifacts/android-apk-${{ github.ref_name }} -name "*.apk" -type f | head -n 1)" >> $GITHUB_ENV
+
+      - name: Find DEB path
+        run: |
+          echo "DEB_PATH=$(find ./artifacts/build-ubuntu-latest-${{ github.ref_name }} -name "*.deb" -type f | head -n 1)" >> $GITHUB_ENV
+
+      - name: Find DMG path
+        run: |
+          echo "DMG_PATH=$(find ./artifacts/build-macos-latest-${{ github.ref_name }} -name "*.dmg" -type f | head -n 1)" >> $GITHUB_ENV
+
       - name: Upload Android APK
         uses: actions/upload-release-asset@v1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: ./artifacts/android-apk-${{ github.ref_name }}/*.apk
+          asset_path: ${{ env.APK_PATH }}
           asset_name: app-debug-${{ github.ref_name }}.apk
           asset_content_type: application/vnd.android.package-archive
 
@@ -154,7 +169,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: ${{ env.ARTIFACT_PATH }}
+          asset_path: ${{ env.DEB_PATH }}
           asset_name: app-${{ github.ref_name }}.deb
           asset_content_type: application/vnd.debian.binary-package
 
@@ -164,7 +179,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: ${{ env.ARTIFACT_PATH }}
+          asset_path: ${{ env.DMG_PATH }}
           asset_name: app-${{ github.ref_name }}.dmg
           asset_content_type: application/x-apple-diskimage
 
