@@ -32,9 +32,9 @@ jobs:
         with:
           name: build-${{ matrix.os }}
           path: |
-            composeApp/build/compose/binaries/main/exe/*.exe
-            composeApp/build/compose/binaries/main/deb/*.deb
-            composeApp/build/compose/binaries/main/dmg/*.dmg
+            composeApp/build/compose/binaries/main-release/exe/*.exe
+            composeApp/build/compose/binaries/main-release/deb/*.deb
+            composeApp/build/compose/binaries/main-release/dmg/*.dmg
 
   build-android:
     runs-on: ubuntu-latest
