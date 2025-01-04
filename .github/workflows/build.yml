@@ -9,7 +9,7 @@ jobs:
   build-desktop:
     strategy:
       matrix:
-        os: [ubuntu-latest, macos-latest] # windows-latest
+        os: [ubuntu-latest, macos-latest, windows-latest]
     runs-on: ${{ matrix.os }}
 
     steps:
@@ -36,13 +36,21 @@ jobs:
             echo "ARTIFACT_PATH=$(find ./composeApp/build/compose/binaries/main-release/deb -name '*.deb' -print -quit)" >> $GITHUB_ENV
           elif [ "${{ matrix.os }}" == "macos-latest" ]; then
             echo "ARTIFACT_PATH=$(find ./composeApp/build/compose/binaries/main-release/dmg -name '*.dmg' -print -quit)" >> $GITHUB_ENV
+          elif [ "${{ matrix.os }}" == "windows-latest" ]; then
+            EXE_PATH=$(find ./composeApp/build/compose/binaries/main-release/win -name '*.exe' -print -quit)
+            MSI_PATH=$(find ./composeApp/build/compose/binaries/main-release/win -name '*.msi' -print -quit)
+            echo "EXE_PATH=${EXE_PATH}" >> $GITHUB_ENV
+            echo "MSI_PATH=${MSI_PATH}" >> $GITHUB_ENV
           fi
 
       - name: Upload platform-specific artifact
         uses: actions/upload-artifact@v3
         with:
           name: build-${{ matrix.os }}-${{ github.ref_name }}
-          path: ${{ env.ARTIFACT_PATH }}
+          # Upload different artifacts based on OS
+          path: |
+            ${{ matrix.os == 'windows-latest' && env.EXE_PATH || env.ARTIFACT_PATH }}
+            ${{ matrix.os == 'windows-latest' && env.MSI_PATH || '' }}
 
   build-android:
     runs-on: ubuntu-latest
@@ -153,6 +161,14 @@ jobs:
         run: |
           echo "DMG_PATH=$(find ./artifacts/build-macos-latest-${{ github.ref_name }} -name "*.dmg" -type f | head -n 1)" >> $GITHUB_ENV
 
+      - name: Find EXE path
+        run: |
+          echo "EXE_PATH=$(find ./artifacts/build-windows-latest-${{ github.ref_name }} -name "*.exe" -type f | head -n 1)" >> $GITHUB_ENV
+
+      - name: Find MSI path
+        run: |
+          echo "MSI_PATH=$(find ./artifacts/build-windows-latest-${{ github.ref_name }} -name "*.msi" -type f | head -n 1)" >> $GITHUB_ENV
+
       - name: Upload Android APK
         uses: actions/upload-release-asset@v1
         env:
@@ -182,6 +198,26 @@ jobs:
           asset_path: ${{ env.DMG_PATH }}
           asset_name: app-${{ github.ref_name }}.dmg
           asset_content_type: application/x-apple-diskimage
+
+      - name: Upload Windows EXE
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: ${{ env.EXE_PATH }}
+          asset_name: app-${{ github.ref_name }}.exe
+          asset_content_type: application/octet-stream
+
+      - name: Upload Windows MSI
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: ${{ env.MSI_PATH }}
+          asset_name: app-${{ github.ref_name }}.msi
+          asset_content_type: application/x-msi
 
       - name: Upload WebAssembly ZIP
         uses: actions/upload-release-asset@v1
