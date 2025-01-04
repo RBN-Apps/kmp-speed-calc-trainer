@@ -29,14 +29,20 @@ jobs:
       - name: Build for ${{ matrix.os }}
         run: ./gradlew packageReleaseDistributionForCurrentOS
 
+      - name: Find build artifact
+        id: find_artifact
+        run: |
+          if [ "${{ matrix.os }}" == "ubuntu-latest" ]; then
+            echo "ARTIFACT_PATH=$(find ./composeApp/build/compose/binaries/main-release/deb -name '*.deb' -print -quit)" >> $GITHUB_ENV
+          elif [ "${{ matrix.os }}" == "macos-latest" ]; then
+            echo "ARTIFACT_PATH=$(find ./composeApp/build/compose/binaries/main-release/dmg -name '*.dmg' -print -quit)" >> $GITHUB_ENV
+          fi
+
       - name: Upload platform-specific artifact
         uses: actions/upload-artifact@v3
         with:
           name: build-${{ matrix.os }}-${{ github.ref_name }}
-          path: |
-            composeApp/build/compose/binaries/main-release/exe/*.exe
-            composeApp/build/compose/binaries/main-release/deb/*.deb
-            composeApp/build/compose/binaries/main-release/dmg/*.dmg
+          path: ${{ env.ARTIFACT_PATH }}
 
   build-android:
     runs-on: ubuntu-latest
@@ -57,11 +63,15 @@ jobs:
       - name: Build APK
         run: ./gradlew assembleDebug
 
+      - name: Find Android APK
+        id: find_apk
+        run: echo "APK_PATH=$(find ./composeApp/build/outputs/apk/debug -name '*.apk' -print -quit)" >> $GITHUB_ENV
+
       - name: Upload Android APK
         uses: actions/upload-artifact@v3
         with:
           name: android-apk-${{ github.ref_name }}
-          path: composeApp/build/outputs/apk/debug/*.apk
+          path: ${{ env.APK_PATH }}
 
   build-wasm:
     runs-on: ubuntu-latest
@@ -144,7 +154,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: ./artifacts/build-ubuntu-latest-${{ github.ref_name }}/*.deb
+          asset_path: ${{ env.ARTIFACT_PATH }}
           asset_name: app-${{ github.ref_name }}.deb
           asset_content_type: application/vnd.debian.binary-package
 
@@ -154,7 +164,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: ./artifacts/build-macos-latest-${{ github.ref_name }}/*.dmg
+          asset_path: ${{ env.ARTIFACT_PATH }}
           asset_name: app-${{ github.ref_name }}.dmg
           asset_content_type: application/x-apple-diskimage
 
