@@ -78,11 +78,11 @@ jobs:
         run: chmod +x ./gradlew
 
       - name: Build WebAssembly
-        run: ./gradlew wasmJsBrowserProductionWebpack
+        run: ./gradlew wasmJsBrowserDistribution
 
       - name: Upload WebAssembly files
         uses: actions/upload-artifact@v3
         with:
-          name: wasm-files
+          name: wasm-web-files
           path: |
-            composeApp/build/kotlin-webpack/wasmJs/productionExecutable/*
+            composeApp/build/dist/wasmJs/productionExecutable/*
