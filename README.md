@@ -1,21 +1,78 @@
-This is a Kotlin Multiplatform project targeting Android, iOS, Web, Desktop.
+[![Build Status](https://github.com/RBN-Apps/kmp-speed-calc-trainer/actions/workflows/build.yml/badge.svg)](https://github.com/RBN-Apps/kmp-speed-calc-trainer/actions)
+[![Kotlin](https://img.shields.io/badge/Kotlin-2.1.0-blue.svg?style=flat-square)](https://kotlinlang.org)
+[![Compose MP](https://img.shields.io/badge/Compose%20MP-1.7.0-purple.svg?style=flat-square)](https://github.com/JetBrains/compose-multiplatform)
+[![Platforms](https://img.shields.io/badge/Targets-Android%20|%20iOS%20|%20Desktop%20|%20WASM-lightgrey.svg?style=flat-square)](#features)
+[![Ask DeepWiki](https://deepwiki.com/badge.svg)](https://deepwiki.com/RBN-Apps/kmp-speed-calc-trainer)
 
-* `/composeApp` is for code that will be shared across your Compose Multiplatform applications.
-  It contains several subfolders:
-  - `commonMain` is for code that’s common for all targets.
-  - Other folders are for Kotlin code that will be compiled for only the platform indicated in the folder name.
-    For example, if you want to use Apple’s CoreCrypto for the iOS part of your Kotlin app,
-    `iosMain` would be the right folder for such calls.
+# Speed Calc Trainer
 
-* `/iosApp` contains iOS applications. Even if you’re sharing your UI with Compose Multiplatform, 
-  you need this entry point for your iOS app. This is also where you should add SwiftUI code for your project.
+A Kotlin Multiplatform application built with Compose that helps you train your multiplication speed.  
+Available on **Android**, **iOS**, **Desktop** (Windows/macOS/Linux) and **WebAssembly**.
 
+## Table of Contents
 
-Learn more about [Kotlin Multiplatform](https://www.jetbrains.com/help/kotlin-multiplatform-dev/get-started.html),
-[Compose Multiplatform](https://github.com/JetBrains/compose-multiplatform/#compose-multiplatform),
-[Kotlin/Wasm](https://kotl.in/wasm/)…
+- [Features](#features)  
+- [Getting Started](#getting-started)  
+- [Prerequisites](#prerequisites) 
+- [Project Structure](#project-structure)  
 
-We would appreciate your feedback on Compose/Web and Kotlin/Wasm in the public Slack channel [#compose-web](https://slack-chats.kotlinlang.org/c/compose-web).
-If you face any issues, please report them on [GitHub](https://github.com/JetBrains/compose-multiplatform/issues).
+## Features
 
-You can open the web application by running the `:composeApp:wasmJsBrowserDevelopmentRun` Gradle task.
+- **Practice Mode** – Random multiplication questions with instant feedback  
+- **Configurable Ranges** – Set minimum and maximum values for each factor  
+- **Smooth Animations** – Feedback fades in/out and slides for a polished feel  
+- **Multiplatform UI** – Single codebase sharing Compose UI across all targets  
+- **Easy Deployment** – GitHub Actions to build & release artifacts for every platform  
+
+## Getting Started
+
+1. **Clone** this repo  
+   ```bash
+   git clone https://github.com/RBN-Apps/kmp-speed-calc-trainer.git
+   cd kmp-speed-calc-trainer
+   ```
+
+2. **Build** all targets with Gradle
+
+   ```bash
+   ./gradlew build
+   ```
+3. **Run** on your platform of choice:
+
+   * **Android**: Open `composeApp` in Android Studio and run on emulator/device
+   * **Desktop**:
+
+     ```bash
+     ./gradlew :composeApp:runDesktop
+     ```
+   * **Web (WASM)**:
+
+     ```bash
+     ./gradlew :composeApp:wasmJsBrowserDevelopmentRun
+     ```
+
+## Prerequisites
+
+* **JDK 17+**
+* **Gradle 8.9** (wrapper included)
+* **Android Studio Flamingo** (for Android/iOS)
+* **Xcode 15+** (for iOS)
+* **Yarn & Node.js** (for WebAssembly)
+
+## Project Structure
+
+```
+.
+├── composeApp       # Multiplatform Compose module
+│   ├── src
+│   │   ├── commonMain  # Shared UI & logic
+│   │   ├── androidMain
+│   │   ├── iosMain
+│   │   ├── desktopMain
+│   │   └── wasmJsMain
+│   └── build.gradle.kts
+├── iosApp           # SwiftUI wrapper for iOS
+├── build.gradle.kts
+├── settings.gradle.kts
+└── .github           # CI workflows
+```
